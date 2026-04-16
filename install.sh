@@ -173,15 +173,15 @@ print_success "Services gestartet"
 
 echo ""
 print_header "Schritt 3/10: Java Installation"
-update_progress 38 "Installiere OpenJDK 17 LTS..."
-apt install -y -qq openjdk-17-jdk openjdk-17-jre
+update_progress 38 "Installiere OpenJDK 21 LTS..."
+apt install -y -qq openjdk-21-jdk openjdk-21-jre
 JAVA_VERSION=$(java -version 2>&1 | head -n 1)
 echo ""
 print_success "Java installiert: $JAVA_VERSION"
 
 update_progress 40 "Konfiguriere JAVA_HOME..."
-echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> /etc/environment
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+echo "export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64" >> /etc/environment
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 echo ""
 print_success "JAVA_HOME konfiguriert"
 
