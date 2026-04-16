@@ -1,0 +1,29 @@
+# Logs
+*.log
+install.log
+
+# Credentials und sensible Daten
+*credentials*.txt
+*api-key*.txt
+*app-key*.txt
+
+# Temporäre Dateien
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS-spezifische Dateien
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor-spezifische Dateien
+.vscode/
+.idea/
+*.sublime-*
+
+# Backup-Dateien
+*.bak
+*.backup
