@@ -161,7 +161,7 @@ echo ""
 print_success "PHP 8.3 installiert"
 
 update_progress 30 "Installiere MariaDB, Redis, NGINX und weitere Tools..."
-apt install -y -qq mariadb-server nginx tar unzip git redis-server docker.io jq ufw
+apt install -y -qq mariadb-server nginx tar unzip git redis-server docker.io jq ufw cron
 echo ""
 print_success "Alle Dependencies installiert"
 
@@ -296,14 +296,16 @@ print_success "Umgebungsvariablen konfiguriert"
 
 update_progress 72 "Migriere Datenbank und seede Daten (kann einige Minuten dauern)..."
 for i in {1..10}; do
-  if php artisan migrate --seed --force >/dev/null 2>&1; then
-    echo ""
-    print_success "Datenbank migriert und geseeded"
-    break
-  fi
-  echo ""
-  print_warning "Migration fehlgeschlagen, Versuch $i/10..."
-  sleep 5
+    if php artisan migrate --seed --force 2>&1 | tee -a "$LOG_FILE" | grep -q "Nothing to migrate\|Migration table created successfully\|Migrated:"; then
+        break
+    else
+        echo ""
+        print_warning "Migration fehlgeschlagen, Versuch $i/10..."
+        if [ $i -eq 10 ]; then
+            print_warning "Migration nach 10 Versuchen fehlgeschlagen - fahre trotzdem fort"
+        fi
+        sleep 2
+    fi
 done
 
 update_progress 75 "Erstelle Admin-User..."
