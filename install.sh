@@ -211,8 +211,8 @@ print_success "Firewall konfiguriert (Ports: 22, 80, 443, 8080, 2022)"
 echo ""
 print_header "Schritt 5/10: Datenbank-Setup"
 update_progress 48 "Sichere MariaDB Installation..."
-mysql -u root <<-EOF >/dev/null 2>&1
-UPDATE mysql.user SET Password=PASSWORD('${DB_PASS}') WHERE User='root';
+mysql -u root <<-EOF 2>/dev/null
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_PASS}';
 DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 DROP DATABASE IF EXISTS test;
@@ -223,7 +223,7 @@ echo ""
 print_success "MariaDB gesichert"
 
 update_progress 50 "Erstelle Pterodactyl Datenbank und User..."
-mysql -u root -p"${DB_PASS}" <<-EOF >/dev/null 2>&1
+mysql -u root -p"${DB_PASS}" <<-EOF 2>/dev/null
 CREATE DATABASE IF NOT EXISTS panel;
 CREATE USER IF NOT EXISTS 'pterodactyl'@'127.0.0.1' IDENTIFIED BY '${DB_PASS}';
 GRANT ALL PRIVILEGES ON panel.* TO 'pterodactyl'@'127.0.0.1' WITH GRANT OPTION;
