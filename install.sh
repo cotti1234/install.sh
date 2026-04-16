@@ -141,10 +141,10 @@ echo ""
 print_success "Basis-Tools installiert"
 
 update_progress 18 "Füge PHP 8.3 Repository hinzu..."
-curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/php/apt.gpg 2>/dev/null
-dpkg -i /tmp/debsuryorg-archive-keyring.deb >/dev/null 2>&1
+curl -sSL https://packages.sury.org/php/apt.gpg -o /tmp/php-sury.gpg 2>/dev/null || wget -q https://packages.sury.org/php/apt.gpg -O /tmp/php-sury.gpg
+gpg --dearmor -o /usr/share/keyrings/deb.sury.org-php.gpg /tmp/php-sury.gpg 2>/dev/null || cat /tmp/php-sury.gpg > /usr/share/keyrings/deb.sury.org-php.gpg
 echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/sury-php.list
-apt update -qq
+apt update -qq 2>/dev/null || apt update
 echo ""
 print_success "PHP Repository hinzugefügt"
 
